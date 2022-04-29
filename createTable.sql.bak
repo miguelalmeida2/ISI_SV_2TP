@@ -22,7 +22,7 @@ create table if not exists administrador(
 
 --APOSTA(transacao, tipo, odd, descricao)
 create table if not exists aposta(
-	transacao 		integer NOT NULL,
+	transacao 		integer,
 	tipo 			varchar(15) CHECK (tipo = 'simples' or tipo = 'múltipla',
 	odd 			integer CHECK (odd > 1),
 	descricao 		varchar(150),
@@ -33,7 +33,7 @@ create table if not exists aposta(
 
 --BANCARIA(transacao, operacao)
 create table if not exists bancaria(
-	transacao 		INTEGER NOT NULL,
+	transacao 		INTEGER,
 	operacao 		INTEGER CHECK (operacao = 'depósito' or operacao = 'levantamento'),
 	PRIMARY KEY 	(transacao),
 	FOREIGN KEY 	(transavao) REFERENCES TRANSACAO (numero)
@@ -52,7 +52,7 @@ create table if not exists documento(
 
 --JOGADOR(id, email, nome, nickname, estado, data_nascimento, data_registo, morada, codigo_postal, localidade, casa_apostas)
 create table if not exists jogador(
-	id 				integer NOT NULL,
+	id 				integer,
 	email 			varchar(60) Constraint jog_email UNIQUE (email) NOT NULL,
 	nome 			varchar(150) NOT NULL,
 	nickname 		varchar(20)  Constraint player_name UNIQUE (nickname) NOT NULL,
@@ -70,11 +70,11 @@ create table if not exists jogador(
 
 --RESOLUCAO(id, valor, resultado, data_resolucao, aposta)
 create table if not exists resolucao(
-	id 				integer NOT NULL,
+	id 				integer,
 	valor 			real NOT NULL,
 	resultado 		varchar(15) CHECK (resultado = 'vitória' or resultado ='derrota' or resultado ='cashout' or resultado ='reembolso')
 	data_resolucao 	date,
-	aposta 			integer NOT NULL,
+	aposta 			integer,
 	PRIMARY KEY 	(id)
 	FOREIGN KEY 	(aposta) REFERENCES TRANSACAO (id)
 );
