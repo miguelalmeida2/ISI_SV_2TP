@@ -1,4 +1,4 @@
---BEGIN transaction;
+BEGIN transaction;
 
 --CASA_APOSTAS(id, nome, NIPC, aposta_minima)
 create table if not exists casa_apostas(
@@ -11,8 +11,8 @@ create table if not exists casa_apostas(
 
 --ADMINISTRADOR(id, email, nome, perfil, casa_apostas)
 create table if not exists administrador(
-	id 				integer NOT NULL CHECK, --(id>0)??,
-	email 			varchar(60) NOT NULL CHECK (email SIMILAR TO '_%@_%') Constraint admin_email UNIQUE (email),
+	id 				integer NOT NULL,
+	email 			varchar(60) NOT NULL CHECK (email SIMILAR TO '_%@_%'), --Constraint admin_email UNIQUE (email),
 	nome 			varchar(150) NOT NULL,
 	perfil 			varchar(15) CHECK (perfil = 'admistrador' or perfil = 'supervisor' or perfil = 'operador'),
 	casa_apostas 	INTEGER NOT NULL,
@@ -50,18 +50,19 @@ create table if not exists documento(
 
 --JOGADOR(id, email, nome, nickname, estado, data_nascimento, data_registo, morada, codigo_postal, localidade, casa_apostas)
 create table if not exists jogador(
-	id 				integer NOT NULL,
-	email 			varchar(60) Constraint jog_email UNIQUE (email) NOT NULL CHECK (email SIMILAR TO '_%@_%'),
+	id 				integer NOT null,
+	email 			varchar(60) NOT NULL CHECK (email SIMILAR TO '_%@_%'), --Constraint jog_email UNIQUE (email) ,
 	nome 			varchar(150) NOT NULL,
-	nickname 		varchar(20)  Constraint player_name UNIQUE (nickname) NOT NULL,
-	estado 			varchar(15) DEFAULT 'activo',
-	data_nascimento date CHECK ( CURRENT_DATE - data_nascimento > 18) ,
-	data_registo 	date CHECK (data_registo - data_nascimento > 18 and data_registo < CURRENT_DATE)  ,
+	nickname 		varchar(20) NOT null, --Constraint player_name UNIQUE (nickname),
+	estado 			varchar(15) DEFAULT 'activo' check(estado = 'activo' or estado = 'suspenso' or estado = 'autoexcluido'),
+	data_nascimento date CHECK ( DATEDIFF (YEAR, data_nascimento, getdate()) > 18) ,
+    data_registo     date CHECK ( (DATEDIFF (year, data_registo ,data_nascimento) > 18) and data_registo < CURRENT_DATE) ,
 	morada 			varchar(150) NOT NULL,
 	codigo_posta	integer	NOT NULL CHECK (codpostal > 999999 AND codpostal < 10000000),
 	localidade 		varchar(50) NOT NULL,
 	casa_apostas 	integer NOT NULL,
 	PRIMARY KEY 	(id)	
+	constraint ageAbove18 check ((data_nascimento + '18 years'::interval)::date <= current_date)
 );
 
 --RESOLUCAO(id, valor, resultado, data_resolucao, aposta)
@@ -101,4 +102,4 @@ ALTER TABLE transacao
 ALTER TABLE transacao 
 	ADD CONSTRAINT jogadorIdFk FOREIGN KEY  	(jogador) REFERENCES JOGADOR (id) ON DELETE CASCADE ON UPDATE CASCADE;
 	
---COMMIT transaction;
+COMMIT transaction;
