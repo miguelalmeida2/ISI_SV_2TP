@@ -45,3 +45,49 @@ GROUP BY nome, email, nickname
 HAVING COUNT(b.operacao = 'depósito') > 0
 
 --3.d)
+SELECT t.casa_apostas, j.email, a.transacao, r.data_resolucao, a.tipo, a.descricao -- r.data_resolucao para confirmar se está certo
+FROM aposta as a
+	JOIN transacao as t ON (t.numero =  a.transacao)
+    JOIN resolucao as r ON (r.aposta = t.numero)
+    JOIN jogador as j ON (j.id = t.jogador)
+--WHERE (r.data_resolucao - current_date > 0)
+WHERE r.data_resolucao IS NULL
+
+--3.e)
+--CREATE VIEW apostas_lastyear
+--AS 
+SELECT a.transacao as aposta_num, a.tipo, a.odd, a.descricao, r.data_resolucao
+FROM aposta as a 
+     JOIN transacao as t ON (a.transacao = t.numero)
+	 JOIN resolucao as r ON (r.aposta = t.numero)
+WHERE ((current_date-t.data_transacao) > 0 and  (current_date-t.data_transacao) < 365); -- Se for no ultimo ano(365 dias)
+WHERE (EXTRACT( YEAR FROM data_transacao) = (EXTRACT(YEAR FROM current_date) -1)) -- Se for no ano passdo YYYY-1
+
+
+--2 opçao mais eficiente mas n sei como adicionar o dt_resolucao		 
+SELECT *
+FROM aposta as a
+WHERE a.transacao IN(
+	SELECT numero
+	FROM transacao as t 
+	WHERE ((EXTRACT( YEAR FROM data_transacao) = (EXTRACT(YEAR FROM current_date) -1)) --Assumindo que é no ano passado YYYY-1
+		AND t.numero IN(
+		SELECT aposta
+		FROM resolucao
+		)
+	)
+)--and  ?? Nâo funciona
+--SELECT data_resolucao
+--FROM resolucao
+--WHERE aposta IN(
+--	SELECT numero
+--	FROM transacao as t
+---	WHERE ((EXTRACT( YEAR FROM data_transacao) = (EXTRACT(YEAR FROM current_date) -1))
+--		AND t.numero IN(
+--			SELECT transacao 
+--			FROM aposta
+--		)	 
+--	)	
+--) 
+
+ 
