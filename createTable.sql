@@ -12,7 +12,7 @@ create table if not exists administrador(
 	id 				integer NOT NULL, --CHECK (id>0)??,
 	email 			varchar(60) NOT NULL CHECK (email SIMILAR TO '_%@_%')  UNIQUE ,
 	nome 			varchar(150) NOT NULL,
-	perfil 			varchar(15) CHECK (perfil = 'admistrador' or perfil = 'supervisor' or perfil = 'operador'),
+	perfil 			varchar(15) CHECK (perfil = 'administrador' or perfil = 'supervisor' or perfil = 'operador'),
 	casa_apostas 	INTEGER NOT NULL,
 	PRIMARY KEY 	(id)
 );
@@ -21,7 +21,7 @@ create table if not exists administrador(
 create table if not exists aposta(
 	transacao 		integer NOT NULL,
 	tipo 			varchar(15) CHECK (tipo = 'simples' or tipo = 'múltipla'),
-	odd 			integer CHECK (odd > 1),
+	odd 			integer CHECK (odd >= 1),
 	descricao 		varchar(150),
 	PRIMARY KEY 	(transacao)
 
@@ -98,5 +98,3 @@ ALTER TABLE transacao
 	ADD CONSTRAINT casa_apostasFK FOREIGN KEY 	(casa_apostas) REFERENCES CASA_APOSTAS (id)ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE transacao
 	ADD CONSTRAINT jogadorIdFk FOREIGN KEY  	(jogador) REFERENCES JOGADOR (id) ON DELETE CASCADE ON UPDATE CASCADE;
-
---COMMIT transaction;

@@ -22,12 +22,14 @@ FROM documento
 GROUP BY j.nome
 
 --2.e)
-SELECT COUNT(transacao) as Aposta_Num,tipo, odd, descricao
+SELECT t.numero as Aposta_Num,tipo, odd, descricao
 FROM aposta as a
 	JOIN transacao as t ON (a.transacao = t.numero)
-	JOIN jogador as j ON (j.id = t.jogador)
-WHERE j.nome = 'Luís Serrano'
-GROUP BY a.tipo, a .odd, a.descricao
+WHERE t.jogador IN(
+	SELECT id
+	FROM jogador j
+	WHERE j.nome = 'Luís Serrano') -- Criar jogador po Manuel Fernandes
+GROUP BY t.numero, a.tipo, a .odd, a.descricao
 
 --3.b) Não está completo. Não sei onde se vai buscar a dt_registo
 SELECT nome 
@@ -68,7 +70,7 @@ WHERE (EXTRACT( YEAR FROM data_transacao) = (EXTRACT(YEAR FROM current_date) -1)
 SELECT *
 FROM aposta as a
 WHERE a.transacao IN(
-	SELECT numero
+	SELECT t.numero
 	FROM transacao as t 
 	WHERE ((EXTRACT( YEAR FROM data_transacao) = (EXTRACT(YEAR FROM current_date) -1)) --Assumindo que é no ano passado YYYY-1
 		AND t.numero IN(
@@ -90,4 +92,27 @@ WHERE a.transacao IN(
 --	)	
 --) 
 
- 
+--3.f)
+	SELECT j.nome, j.id, SUM
+	FROM transacao t	
+		JOIN bancaria b ON (t.numero = b.transacao and b.operacao = 'levantamento')
+		Left JOIN aposta a ON (a.transacao = t.numero) 
+		JOIN resolucao ( t.numero = r.transacao)
+
+
+--4)
+BEGIN transaction; 	
+INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
+VALUES((SELECT numero
+  FROM transacao 
+  ORDER BY numero DESC LIMIT 1)+1, 10, current_date, 1, 2);  
+  
+INSERT INTO aposta(transacao,tipo,odd,descricao)
+VALUES((
+  SELECT numero
+  FROM transacao 
+  ORDER BY numero DESC LIMIT 1), 'simples', 1.2, 'FCP vs SLB - Empate');
+
+
+COMMIT TRANSACTION; --SE NAO OCORREU NENHUM ERRO
+ROLLBACK TRANSACTION;
