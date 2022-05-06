@@ -40,16 +40,6 @@ VALUES (4, 400, '20210130', 1, 2);
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
 VALUES (5, 500, '20220315', 1, 1);
 
-INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (6, 600, '20220315', 1, 2);
-
-INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (7, 700, '20220315', 1, 1);
-
-INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (8, 800, '20220315', 1, 1);
-
-
 INSERT INTO aposta(transacao,tipo,odd,descricao)
 VALUES (1, 'múltipla', 1.43, 'Oposta múltiupla  com clubes da bundesliga');
 
@@ -65,15 +55,8 @@ VALUES (4, 'múltipla', 4.43, 'Oposta múltiupla  com clubes da serie A');
 INSERT INTO aposta(transacao,tipo,odd,descricao)
 VALUES (5, 'simples', 5.43, 'Oposta múltiupla  com clubes da liga NOS');
 
-INSERT INTO aposta(transacao,tipo,odd,descricao)
-VALUES (8, 'simples', 8.43, 'Oposta múltiupla  com clubes da liga MLS');
-
 INSERT INTO bancaria(transacao,operacao)
-VALUES (6, 'depósito');
-
-INSERT INTO bancaria(transacao,operacao)
-VALUES (7, 'levantamento');
-
+VALUES (2, 'depósito');
 --DOC jog.id=1
 INSERT INTO documento(jogador,numero, descricao, estado, data_submissao)
 VALUES (1, 1, 'Documentos do jogador id = 1', 'aceite', '20220414');
@@ -86,16 +69,16 @@ INSERT INTO documento(jogador,numero, descricao, estado, data_submissao)
 VALUES (2, 3, 'Documentos do jogador id = 2', 'recusado', '20220119');
 
 INSERT INTO resolucao(id, valor, resultado, data_resolucao, aposta)
-VALUES ( 1, 143, 'vitória', '20210428', 1);
+VALUES ( 1, 10, 'vitória', '20210428', 1);
 
 INSERT INTO resolucao(id, valor, aposta) -- Aposta pendente 
-VALUES ( 2, 0, 2);
+VALUES ( 2, 20, 2);
 
 INSERT INTO resolucao(id, valor, aposta) -- Aposta pendente
-VALUES ( 3, 0, 3);
+VALUES ( 3, 30, 3);
 
 INSERT INTO resolucao(id, valor, resultado, data_resolucao, aposta)
-VALUES ( 4, 0, 'derrota', '20220125', 4);
+VALUES ( 4, 40, 'derrota', '20220125', 4);
 
 INSERT INTO resolucao(id, valor, resultado, data_resolucao, aposta)
-VALUES ( 5, 0, 'derrota', '20220125', 5);
+VALUES ( 5, 50, 'derrota', '20220125', 5);
