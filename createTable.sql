@@ -19,7 +19,7 @@ create table if not exists administrador(
 
 --APOSTA(transacao, tipo, odd, descricao)
 create table if not exists aposta(
-	transacao 		integer NOT NULL CHECK (id>0),
+	transacao 		integer NOT NULL CHECK (transacao>0),
 	tipo 			varchar(15) CHECK (tipo = 'simples' or tipo = 'múltipla'),
 	odd 			integer CHECK (odd >= 1),
 	descricao 		varchar(150),
@@ -30,7 +30,7 @@ create table if not exists aposta(
 
 --BANCARIA(transacao, operacao)
 create table if not exists bancaria(
-	transacao 		INTEGER NOT NULL CHECK (id>0),
+	transacao 		INTEGER NOT NULL CHECK (transacao>0),
 	operacao 		VARCHAR(15) CHECK (operacao = 'depósito' or operacao = 'levantamento'),
 	PRIMARY KEY 	(transacao)
 );
@@ -53,12 +53,12 @@ create table if not exists jogador(
 	nome 			varchar(150) NOT NULL,
 	nickname 		varchar(20)  UNIQUE  NOT NULL,
 	estado 			varchar(15) DEFAULT 'activo',
-	data_nascimento date, --CHECK ( DATEDIFF(data, data_nascimento, CURRENT_DATE) >= 18) ,
-	data_registo 	date, -- CHECK ( DATEDIFF(year, data_registo ,data_nascimento) > 18) AND data_registo < CURRENT_DATE)  ,
+	data_nascimento date, CHECK ( (data_nascimento between date '1900-01-01' and current_date) and (CURRENT_DATE - data_nascimento) >= 6574),
+	data_registo 	date, CHECK (((data_registo - data_nascimento) >= 6574) AND data_registo < CURRENT_DATE) ,
 	morada 			varchar(150) NOT NULL,
 	codigo_postal	integer	NOT NULL CHECK (codigo_postal > 999999 AND codigo_postal < 10000000),
 	localidade 		varchar(50) NOT NULL,
-	casa_apostas 	integer NOT NULL,
+	casa_apostas 	integer NOT NULL CHECK (casa_apostas > 0),
 	PRIMARY KEY 	(id)
 );
 
@@ -74,8 +74,8 @@ create table if not exists resolucao(
 
 --TRANSACAO(numero, valor, data_transacao, casa_apostas, jogador)
 create table if not exists transacao(
-	numero 			integer NOT NULL CHECK (id>0),
-	valor 			real,
+	numero 			integer NOT NULL CHECK (numero>0),
+	valor 			real check (valor >= 0),
 	data_transacao 	date,
 	casa_apostas 	integer NOT NULL,
 	jogador			integer NOT NULL,

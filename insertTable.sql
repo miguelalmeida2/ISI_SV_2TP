@@ -1,3 +1,4 @@
+BEGIN transaction;
 INSERT INTO casa_apostas(id,nome, NIPC, aposta_minima)
 VALUES (1, 'Betclic', '600016234', 0.05);
 
@@ -25,6 +26,9 @@ VALUES	(1, 'luis_serrano@gmail.com', 'Luís Serrano', 'lserras', 'activo', '2000
 INSERT INTO jogador(id, email, nome, nickname, estado, data_nascimento, data_registo, morada, codigo_postal, localidade, casa_apostas)
 VALUES	(2, 'carlosRosa@gmail.com', 'Carlos Rosa', 'carlRosa', 'activo', '20000228', '20200215', 'Avenida Gago Coutinho 39b', 1100500,'Lisboa',1);
 
+INSERT INTO jogador(id, email, nome, nickname, estado, data_nascimento, data_registo, morada, codigo_postal, localidade, casa_apostas)
+VALUES	(3, 'ManuelFernandes@gmail.com', 'Manuel Fernandes', 'FernManuel', 'activo', '19950228', '20200415', 'Rua dos Gambuzinos', 1100700,'Torres Vedras',1);
+
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
 VALUES (1, 100, '20210315', 1, 1);
 
@@ -49,6 +53,14 @@ VALUES (7, 700, '20220315', 1, 1);
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
 VALUES (8, 800, '20220315', 1, 1);
 
+INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
+VALUES (9, 900, '20220415', 1, 3);
+
+INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
+VALUES (10, 10, '20220515', 1, 3);
+
+INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
+VALUES (11, 11, '20220615', 1, 3);
 
 INSERT INTO aposta(transacao,tipo,odd,descricao)
 VALUES (1, 'múltipla', 1.43, 'Oposta múltiupla  com clubes da bundesliga');
@@ -68,8 +80,18 @@ VALUES (5, 'simples', 5.43, 'Oposta múltiupla  com clubes da liga NOS');
 INSERT INTO aposta(transacao,tipo,odd,descricao)
 VALUES (8, 'simples', 8.43, 'Oposta múltiupla  com clubes da liga MLS');
 
+INSERT INTO aposta(transacao,tipo,odd,descricao)
+VALUES (9, 'múltipla', 9.43, 'Oposta múltiupla  com clubes da laliga');
+
+INSERT INTO aposta(transacao,tipo,odd,descricao)
+VALUES (10, 'múltipla', 10.43, 'Oposta múltiupla  com clubes do brasileirão');
+
 INSERT INTO bancaria(transacao,operacao)
 VALUES (6, 'depósito');
+
+INSERT INTO bancaria(transacao,operacao)
+VALUES (11, 'depósito');
+
 
 INSERT INTO bancaria(transacao,operacao)
 VALUES (7, 'levantamento');
@@ -99,3 +121,4 @@ VALUES ( 4, 0, 'derrota', '20220125', 4);
 
 INSERT INTO resolucao(id, valor, resultado, data_resolucao, aposta)
 VALUES ( 5, 0, 'derrota', '20220125', 5);
+COMMIT TRANSACTION;

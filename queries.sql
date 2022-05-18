@@ -29,7 +29,7 @@ FROM aposta as a
 WHERE t.jogador IN(
 	SELECT id
 	FROM jogador j
-	WHERE j.nome = 'Luís Serrano') -- Criar jogador po Manuel Fernandes
+	WHERE j.nome = 'Manuel Fernandes')
 GROUP BY t.numero, a.tipo, a .odd, a.descricao
 
 --3.b) 
