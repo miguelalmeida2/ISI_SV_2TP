@@ -1,0 +1,62 @@
+a) 
+	i)
+		π(casa_apostas, email, nome, nickname)
+			σ(estado = 'activo') JOGADOR
+	
+	ii)
+		Jogadores_Suspensos ← σ(estado = 'suspenso') JOGADOR
+
+		Jogadores_AutoExcluidos ← σ(estado = 'activo') JOGADOR
+	
+		Jogadores_Ativos ← π(casa_apostas, email, nome, nickname)
+						(JOGADOR - Jogadores_Suspensos - Jogadores_AutoExcluidos)
+
+	iii)
+		π(casa_apostas, email, nome, nickname)
+		   (σ(estado = 'activo') JOGADOR ∩ JOGADOR)
+
+
+		
+b) 
+	i)
+		perfil γ
+		  π(email,nome,perfil) ADMINISTRADOR
+
+	ii)
+		Operadores ← σ(perfil = 'operador') ADMINISTRADOR
+
+		Supervisores ← σ(perfil = 'supervisor') ADMINISTRADOR
+
+		Administradores ← σ(perfil = 'administrador') ADMINISTRADOR
+
+		Result ← perfil γ 
+				π(email,nome,perfil)
+					(Operadores ∪ Supervisores ∪ Administradores)
+
+c)
+		π(id,nome,NIPC,count) CASA_APOSTAS
+			⨝ (id = casa_apostas) (casa_apostas γ(count casa_apostas) JOGADOR)
+	
+d)
+		π(id, nDocs) JOGADOR ⨝
+			ρ(id, nDocs) (jogador γ(count jogador) DOCUMENTO)
+	
+e)
+	i)
+		idManuel ← π(id) JOGADOR
+				  σ(name = 'Manuel Fernandes') JOGADOR
+							
+		TransacoesManuel ← π(numero)
+	                 		    σ(jogador = idManuel) TRANSACAO
+										
+		ApostasManuel ← APOSTA ⨝ (transacao = numero) TransacoesManuel
+
+	ii)
+		Prim ← π(id) JOGADOR
+			    σ(name = 'Manuel Fernandes') JOGADOR
+		
+		Seg ← π(numero)
+			   (Transacao ⨝ Prim)
+					
+		Res ← π(descricao,odd,transacao)
+		        (Aposta ÷ Seg)
