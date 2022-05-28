@@ -1,6 +1,6 @@
 --CASA_APOSTAS(id, nome, NIPC, aposta_minima)
 create table if not exists casa_apostas(
-	id 				serial,
+	id 				serial CHECK (id >0),
 	nome 			varchar(150) NOT NULL,
 	NIPC 			varchar(9) NOT NULL,
 	aposta_minima 	DECIMAL NOT NULL, --CHECK( aposta_minima SIMILAR TO '_%._%,')
@@ -9,10 +9,10 @@ create table if not exists casa_apostas(
 
 --ADMINISTRADOR(id, email, nome, perfil, casa_apostas)
 create table if not exists administrador(
-	id 				integer NOT NULL CHECK (id>0), 
+	id 				serial  NOT NULL CHECK (id>0), 
 	email 			varchar(60) NOT NULL CHECK (email SIMILAR TO '_%@_%')  UNIQUE ,
 	nome 			varchar(150) NOT NULL,
-	perfil 			varchar(15) CHECK (perfil = 'administrador' or perfil = 'supervisor' or perfil = 'operador'),
+	perfil 			varchar(15) CHECK (perfil in('administrador','supervisor','operador')),
 	casa_apostas 	INTEGER NOT NULL,
 	PRIMARY KEY 	(id)
 );
@@ -21,7 +21,7 @@ create table if not exists administrador(
 create table if not exists aposta(
 	transacao 		integer NOT NULL CHECK (transacao>0),
 	tipo 			varchar(15) CHECK (tipo = 'simples' or tipo = 'múltipla'),
-	odd 			integer CHECK (odd >= 1),
+	odd 			real CHECK (odd >= 1),
 	descricao 		varchar(150),
 	PRIMARY KEY 	(transacao)
 
@@ -40,7 +40,7 @@ create table if not exists documento(
 	jogador 		INTEGER NOT NULL ,
 	numero 			integer NOT NULL CHECK (numero > 0),
 	descricao 		varchar(150) NOT NULL,
-	estado 			varchar(15) CHECK(estado = 'pendente' or estado = 'aceite' or estado = 'recusado'),
+	estado 			varchar(15) CHECK(estado in('pendente','aceite','recusado')),
 	data_submissao 	date,
 	PRIMARY KEY 	(jogador, numero)
 
@@ -56,7 +56,7 @@ create table if not exists jogador(
 	data_nascimento date, CHECK ( (data_nascimento between date '1900-01-01' and current_date) and (CURRENT_DATE - data_nascimento) >= 6574),
 	data_registo 	date, CHECK (((data_registo - data_nascimento) >= 6574) AND data_registo < CURRENT_DATE) ,
 	morada 			varchar(150) NOT NULL,
-	codigo_postal	integer	NOT NULL CHECK (codigo_postal > 999999 AND codigo_postal < 10000000),
+	codigo_postal	integer	NOT NULL CHECK (codigo_postal < 9999999 AND codigo_postal > 0),
 	localidade 		varchar(50) NOT NULL,
 	casa_apostas 	integer NOT NULL CHECK (casa_apostas > 0),
 	PRIMARY KEY 	(id)
@@ -65,8 +65,8 @@ create table if not exists jogador(
 --RESOLUCAO(id, valor, resultado, data_resolucao, aposta)
 create table if not exists resolucao(
 	id 				integer NOT NULL CHECK (id>0),
-	valor 			real NOT NULL,
-	resultado 		varchar(15) CHECK (resultado = 'vitória' or resultado ='derrota' or resultado ='cashout' or resultado ='reembolso'),
+	valor 			real NOT NULL DEFAULT 0,
+	resultado 		varchar(15) CHECK (resultado in( 'vitória','derrota','cashout','reembolso'),
 	data_resolucao 	date,
 	aposta 			integer NOT NULL,
 	PRIMARY KEY 	(id)

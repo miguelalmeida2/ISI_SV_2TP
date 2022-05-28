@@ -1,6 +1,6 @@
 BEGIN transaction;
 INSERT INTO casa_apostas(id,nome, NIPC, aposta_minima)
-VALUES (1, 'Betclic', '600016234', 0.05);
+VALUES (1, 'Betclic', '600016234', 0.05),(2, 'Betano', '80884442', 0.01);
 
 INSERT INTO administrador(id,email,nome,perfil,casa_apostas)
 VALUES (1, 'jorge@betclic.pt', 'Jorge Mendes', 'administrador',1);
@@ -29,38 +29,47 @@ VALUES	(2, 'carlosRosa@gmail.com', 'Carlos Rosa', 'carlRosa', 'activo', '2000022
 INSERT INTO jogador(id, email, nome, nickname, estado, data_nascimento, data_registo, morada, codigo_postal, localidade, casa_apostas)
 VALUES	(3, 'ManuelFernandes@gmail.com', 'Manuel Fernandes', 'FernManuel', 'activo', '19950228', '20200415', 'Rua dos Gambuzinos', 1100700,'Torres Vedras',1);
 
+INSERT INTO jogador(id, email, nome, nickname, estado, data_nascimento, data_registo, morada, codigo_postal, localidade, casa_apostas)
+VALUES	(4, 'JoaquimGoncalves@gmail.com', 'Joaquim Goncalves', 'JoaquimGonca', 'activo', '19850228', '20200215', 'Rua dos Esquilos', 1100800,'Torres Vedras',2),
+(5, 'JoanaLuis@gmail.com', 'Joana Luis', 'JoanaL', 'activo', '19750228', '20200115', 'Rua do Brasil', 1100900,'Torres Vedras',2),
+(6, 'FranciscoMedeiros@gmail.com', 'Francisco Medeiros', 'FranMedeiros', 'activo', '20000817', '20200115', 'Rua da Fonte Nova', 1100700,'Lisboa',1);
+
+
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
 VALUES (1, 100, '20210315', 1, 1);
 
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (2, 200, '20220130', 1, 2);
+VALUES (2, 20, '20220130', 1, 2);
 
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (3, 300, '20220315', 1, 1);
+VALUES (3, 30, '20220315', 1, 1);
 
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (4, 400, '20210130', 1, 2);
+VALUES (4, 40, '20210130', 1, 2);
 
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (5, 500, '20220315', 1, 1);
+VALUES (5, 50, '20220315', 1, 1);
 
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (6, 600, '20220315', 1, 2);
+VALUES (6, 60, '20220315', 1, 2);
 
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (7, 700, '20220315', 1, 1);
+VALUES (7, 70, '20220315', 1, 1);
 
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (8, 800, '20220315', 1, 1);
+VALUES (8, 80, '20220315', 1, 1);
 
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (9, 900, '20220415', 1, 3);
+VALUES (9, 90, '20220415', 1, 3);
 
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (10, 10, '20220515', 1, 3);
+VALUES (10, 100, '20220515', 1, 3);
 
 INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
-VALUES (11, 11, '20220615', 1, 3);
+VALUES (11, 110, '20220315', 1, 3);
+
+INSERT INTO transacao(numero, valor, data_transacao, casa_apostas, jogador)
+VALUES (12, 120, '20220115', 1, 6);
 
 INSERT INTO aposta(transacao,tipo,odd,descricao)
 VALUES (1, 'múltipla', 1.43, 'Oposta múltiupla  com clubes da bundesliga');
@@ -92,9 +101,13 @@ VALUES (6, 'depósito');
 INSERT INTO bancaria(transacao,operacao)
 VALUES (11, 'depósito');
 
-
 INSERT INTO bancaria(transacao,operacao)
 VALUES (7, 'levantamento');
+
+INSERT INTO bancaria(transacao,operacao)
+VALUES (12, 'levantamento');
+
+
 
 --DOC jog.id=1
 INSERT INTO documento(jogador,numero, descricao, estado, data_submissao)
@@ -106,6 +119,7 @@ VALUES (1, 2, 'Documentos do jogador id = 1', 'pendente', '20220218');
 --DOC jog.id=2
 INSERT INTO documento(jogador,numero, descricao, estado, data_submissao)
 VALUES (2, 3, 'Documentos do jogador id = 2', 'recusado', '20220119');
+
 
 INSERT INTO resolucao(id, valor, resultado, data_resolucao, aposta)
 VALUES ( 1, 143, 'vitória', '20210428', 1);
